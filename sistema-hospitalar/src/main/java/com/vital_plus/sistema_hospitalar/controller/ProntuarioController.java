@@ -67,12 +67,23 @@ public class ProntuarioController {
      */
     @Operation(summary = "Listar Prontuarios por Paciente", description = "Lista todos os prontuarios médicos associados a um paciente específico.")
     @GetMapping("/paciente/{pacienteId}")
-    public ResponseEntity<List<Prontuario>> listarPorPaciente(@PathVariable Long pacienteId) {
+    public ResponseEntity<?> listarPorPaciente(@PathVariable Long pacienteId) {
         if (!pacienteRepository.existsById(pacienteId)) {
             log.warn("Paciente não encontrado: {}", pacienteId);
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("Paciente com ID " + pacienteId + " não encontrado.");
         }
+
+        var prontuarios = prontuarioRepository.findByPacienteId(pacienteId);
+
+        if (prontuarios == null || prontuarios.isEmpty()) {
+            log.warn("Nenhum prontuário encontrado para o paciente ID: {}", pacienteId);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("Nenhum prontuário encontrado para o paciente ID " + pacienteId);
+        }
+
         log.info("Listando prontuários para o paciente ID: {}", pacienteId);
-        return ResponseEntity.ok(prontuarioRepository.findByPacienteId(pacienteId));
+        return ResponseEntity.ok(prontuarios);
     }
+
 }

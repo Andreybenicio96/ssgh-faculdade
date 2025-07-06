@@ -91,6 +91,7 @@ public class ReceitaMedicaController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Paciente não encontrado.");
         }
 
+
         var paciente = pacienteOpt.get();
         if (!paciente.getId().equals(id)) {
             log.warn("Tentativa de acesso não autorizado às receitas de outro paciente: pacienteId={}, email={}", id, email);
