@@ -1,6 +1,7 @@
 package com.vital_plus.sistema_hospitalar.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 
@@ -26,9 +27,11 @@ public class TipoExame {
     private String id;
 
     @Column(nullable = false, unique = true)
+    @NotBlank(message = "O nome do tipo de exame é obrigatório.")
     private String nome;
 
     @Column(nullable = false)
+    @NotBlank(message = "A descrição do tipo de exame é obrigatória.")
     private String descricao;
 
     @Column(nullable = false)

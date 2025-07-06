@@ -5,6 +5,8 @@ import java.time.LocalDate;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,11 +22,18 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Paciente extends Usuario {
-    
+    @NotBlank(message = "O nome completo é obrigatorio.")
     private String nomeCompleto;
+
+    @NotBlank(message = "O endereço é obrigatorio.")
     private String endereco;
+
+    @NotNull(message = "A data de nascimento é obrigatoria.")
     private LocalDate dataNascimento;
+
+    @NotBlank(message = "O sexo é obrigatorio.")
     private String sexo;
+    
 
     public void atualizarPerfilPaciente(String nomeUsuario, String email, String telefone,
                                         String nomeCompleto, String endereco, LocalDate dataNascimento, String sexo) {

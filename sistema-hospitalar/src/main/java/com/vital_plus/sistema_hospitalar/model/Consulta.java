@@ -15,6 +15,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -44,7 +45,11 @@ public class Consulta {
     @JoinColumn(name = "paciente_id")
     // Relacionamento com a entidade Paciente
     private Paciente paciente; // Nome do paciente
+    
+    @NotBlank(message = "O motivo da consulta é obrigatorio.")
     private String motivoConsulta; // Motivo da consulta
+
+    
     private String observacoes; // Observações adicionais sobre a consulta
     
     

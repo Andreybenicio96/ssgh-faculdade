@@ -11,11 +11,10 @@ import java.util.Date;
 
 @Service
 public class JwtService {
+    private static final String SECRET_KEY = "chave-super-secreta-vitalplus-2025";
+    private static final long EXPIRATION_TIME = 86400000; // 1 dia
 
-    private static final String SECRET_KEY = "minha-chave-secreta-para-assinar-o-token-vitalplus-2025";
-    private static final long EXPIRATION_TIME = 86400000; // 1 dia em milissegundos
-
-    private Key getChaveAssinatura() {
+    private Key getChave() {
         return Keys.hmacShaKeyFor(SECRET_KEY.getBytes());
     }
 
@@ -25,20 +24,16 @@ public class JwtService {
                 .claim("role", role)
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
-                .signWith(getChaveAssinatura(), SignatureAlgorithm.HS256)
+                .signWith(getChave(), SignatureAlgorithm.HS256)
                 .compact();
     }
 
-    public boolean validarToken(String token) {
-        try {
-            Jwts.parserBuilder()
-                    .setSigningKey(getChaveAssinatura())
-                    .build()
-                    .parseClaimsJws(token);
-            return true;
-        } catch (Exception e) {
-            return false;
-        }
+    public Claims getClaims(String token) {
+        return Jwts.parserBuilder()
+                .setSigningKey(getChave())
+                .build()
+                .parseClaimsJws(token)
+                .getBody();
     }
 
     public String extrairEmail(String token) {
@@ -47,13 +42,5 @@ public class JwtService {
 
     public String extrairRole(String token) {
         return getClaims(token).get("role", String.class);
-    }
-
-    public Claims getClaims(String token) {
-        return Jwts.parserBuilder()
-                .setSigningKey(getChaveAssinatura())
-                .build()
-                .parseClaimsJws(token)
-                .getBody();
     }
 }

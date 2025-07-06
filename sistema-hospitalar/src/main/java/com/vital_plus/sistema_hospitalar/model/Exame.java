@@ -1,6 +1,8 @@
 package com.vital_plus.sistema_hospitalar.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 import java.time.LocalDate;
@@ -23,7 +25,10 @@ public class Exame {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotNull(message = "A data do exame é obrigatoria.")
     private LocalDate dataExame; // Data em que o exame foi realizado
+    
+    @NotBlank(message = "O nome do exame é obrigatorio.")
     private String resultado; // Resultado do exame
 
     @ManyToOne

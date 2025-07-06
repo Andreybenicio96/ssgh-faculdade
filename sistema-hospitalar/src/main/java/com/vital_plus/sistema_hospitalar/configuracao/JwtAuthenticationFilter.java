@@ -1,6 +1,5 @@
 package com.vital_plus.sistema_hospitalar.configuracao;
 
-import com.vital_plus.sistema_hospitalar.configuracao.*;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -24,15 +23,27 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private JwtService jwtService;
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request,
-            HttpServletResponse response,
-            FilterChain filterChain)
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
 
-        String authorizationHeader = request.getHeader("Authorization");
+        String path = request.getRequestURI();
+        String method = request.getMethod();
 
-        if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
-            String token = authorizationHeader.replace("Bearer ", "");
+        boolean isPublic = path.equals("/autenticacao/login") ||
+                (path.equals("/administradores") && method.equals("POST")) ||
+                path.startsWith("/swagger") ||
+                path.startsWith("/v3") ||
+                path.startsWith("/h2");
+
+        if (isPublic) {
+            filterChain.doFilter(request, response);
+            return;
+        }
+
+        String authHeader = request.getHeader("Authorization");
+
+        if (authHeader != null && authHeader.startsWith("Bearer ")) {
+            String token = authHeader.substring(7);
 
             try {
                 Claims claims = jwtService.getClaims(token);
@@ -40,16 +51,15 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 String role = claims.get("role", String.class);
 
                 if (email != null && role != null) {
-                    var auth = new UsernamePasswordAuthenticationToken(
-                            email,
-                            null,
+                    UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(
+                            email, null,
                             Collections.singletonList(new SimpleGrantedAuthority("ROLE_" + role)));
+
                     SecurityContextHolder.getContext().setAuthentication(auth);
                 }
-
             } catch (Exception e) {
                 response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-                response.getWriter().write("Token inválido ou expirado.");
+                response.getWriter().write("Token invalido");
                 return;
             }
         }

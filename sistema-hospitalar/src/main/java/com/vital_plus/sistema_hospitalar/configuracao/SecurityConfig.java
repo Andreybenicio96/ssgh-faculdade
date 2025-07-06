@@ -2,6 +2,7 @@ package com.vital_plus.sistema_hospitalar.configuracao;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -24,30 +25,27 @@ public class SecurityConfig {
     }
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http
-                .csrf(AbstractHttpConfigurer::disable)
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        http.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(
-                                "/h2-console/**",
-                                "/autenticacao/login",
-                                "/pacientes/**",
+                        .requestMatchers("/h2-console/**", "/autenticacao/login", "/administradores", "/swagger-ui/**",
+                                "/v3/api-docs/**")        
+                        .permitAll()
+                        .requestMatchers("/pacientes/**",
                                 "/profissionais/**",
-                                "/administradores/**",
                                 "/prontuarios/**",
                                 "/receitas/**",
                                 "/notificacoes/**",
                                 "/internacoes/**",
                                 "/leitos/**",
                                 "/exames/**",
+                                "/tipos-exame/**",
                                 "/gerenciar-consultas/**",
-                                "/teleconsulta/**")
-                        .permitAll()
+                                "/teleconsulta/**").permitAll()
                         .anyRequest().authenticated())
+                .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .headers(headers -> headers.frameOptions().sameOrigin())
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
-
         return http.build();
     }
 

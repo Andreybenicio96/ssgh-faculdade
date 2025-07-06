@@ -1,6 +1,8 @@
 package com.vital_plus.sistema_hospitalar.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import java.time.LocalDate;
 
@@ -28,5 +30,6 @@ public class ReceitaMedica {
     @Column(nullable = false, length = 1000)
     private String conteudo;
 
+    @NotNull(message = "A data de emissão é obrigatoria.")
     private LocalDate dataEmissao;
 }

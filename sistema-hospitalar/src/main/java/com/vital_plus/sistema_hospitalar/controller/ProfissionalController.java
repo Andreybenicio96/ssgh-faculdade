@@ -4,6 +4,12 @@ import com.vital_plus.sistema_hospitalar.dto.AtualizarPerfilProfissionalDTO;
 import com.vital_plus.sistema_hospitalar.enums.TipoUsuario;
 import com.vital_plus.sistema_hospitalar.model.ProfissionalSaude;
 import com.vital_plus.sistema_hospitalar.repository.ProfissionalSaudeRepository;
+
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
+import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -11,6 +17,8 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/profissionais")
+@Tag(name = "Profissionais de Saúde", description = "Gerenciamento de Profissionais de Saúde")
+@Slf4j
 public class ProfissionalController {
 
     @Autowired
@@ -19,38 +27,17 @@ public class ProfissionalController {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    @PostMapping
-    public ResponseEntity<ProfissionalSaude> salvar(@RequestBody ProfissionalSaude profissional) {
-        if (profissional.getTipoUsuario() == null || !profissional.getTipoUsuario().equals(TipoUsuario.PROFISSIONAL_SAUDE)) {
-            return ResponseEntity.badRequest().body(null);
-        }
-        if (profissional.getSenhaHash() == null || profissional.getSenhaHash().isEmpty()) {
-            return ResponseEntity.badRequest().body(null);
-        }
-        if (profissional.getEmail() == null || profissional.getEmail().isEmpty()) {
-            return ResponseEntity.badRequest().body(null);
-        }
-        if (profissionalRepository.findByEmail(profissional.getEmail()).isPresent()) {
-            return ResponseEntity.badRequest().body(null);
-        }
-        if (profissional.getNomeUsuario() == null || profissional.getNomeUsuario().isEmpty()) {
-            profissional.setNomeUsuario(profissional.getEmail().split("@")[0]);
-        }
-        if (profissional.getSenhaHash().length() < 6) {
-            return ResponseEntity.badRequest().body(null);
-        }
-
-
-        profissional.setSenhaHash(passwordEncoder.encode(profissional.getSenhaHash()));
-        return ResponseEntity.ok(profissionalRepository.save(profissional));
-    }
-    
-    @PutMapping("/{id}")
+   
+    @Operation(summary = "Atualizar Perfil Profissional", description = "Permite que um profissional de saúde atualize seu perfil.")
+    @PutMapping("/atualizar-perfil/{id}")
 public ResponseEntity<?> atualizarPerfil(@PathVariable Long id,
-                                         @RequestBody AtualizarPerfilProfissionalDTO dto) {
+                                        @Valid @RequestBody AtualizarPerfilProfissionalDTO dto) {
     var profissionalOpt = profissionalRepository.findById(id);
     if (profissionalOpt.isEmpty()) return ResponseEntity.notFound().build();
-
+    if (!profissionalOpt.get().getTipoUsuario().equals(TipoUsuario.PROFISSIONAL_SAUDE)) {
+        log.warn("Tentativa de atualização de perfil por usuário não profissional: {}", profissionalOpt.get().getEmail());
+        return ResponseEntity.status(403).body("Acesso negado. Apenas profissionais de saúde podem atualizar o perfil.");
+    }
     var profissional = profissionalOpt.get();
     profissional.atualizarPerfilProfissional(
         dto.getNomeUsuario(),
@@ -61,12 +48,14 @@ public ResponseEntity<?> atualizarPerfil(@PathVariable Long id,
     );
 
     profissionalRepository.save(profissional);
+    log.info("Perfil do profissional atualizado com sucesso: {}", profissional.getEmail());
     return ResponseEntity.ok("Perfil do profissional atualizado com sucesso.");
 }
 
-
+    @Operation(summary = "Listar Profissionais de Saúde", description = "Lista todos os profissionais de saúde cadastrados no sistema.")
     @GetMapping
     public ResponseEntity<?> listar() {
+        log.info("Listando todos os profissionais de saúde.");
         return ResponseEntity.ok(profissionalRepository.findAll());
     }
 }

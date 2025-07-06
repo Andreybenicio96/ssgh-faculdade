@@ -5,7 +5,12 @@ import com.vital_plus.sistema_hospitalar.model.Notificacao;
 import com.vital_plus.sistema_hospitalar.model.Paciente;
 import com.vital_plus.sistema_hospitalar.repository.NotificacoesRepository;
 import com.vital_plus.sistema_hospitalar.repository.PacienteRepository;
+
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -17,6 +22,8 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/notificacoes")
+@Tag(name = "Notificações", description = "Gerenciamento de Notificações para Pacientes")
+@Slf4j
 @PreAuthorize("hasRole('ADMIN') or hasRole('PROFISSIONAL_SAUDE')")
 public class NotificacoesController {
 
@@ -29,6 +36,8 @@ public class NotificacoesController {
     /**
      * Buscar todas as notificações de um paciente.
      */
+
+    @Operation(summary = "Buscar Notificações por Paciente", description = "Retorna todas as notificações associadas a um paciente específico.")
     @GetMapping("/{pacienteId}")
     public ResponseEntity<List<Notificacao>> buscarPorPaciente(@PathVariable Long pacienteId) {
         // Valida existência do paciente
@@ -42,6 +51,8 @@ public class NotificacoesController {
     /**
      * Criar nova notificação para um paciente.
      */
+    @Operation(summary = "Criar Notificação", description = "Cria uma nova notificação para um paciente.")
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
     public ResponseEntity<Notificacao> criar(@Valid @RequestBody NotificacaoDTO dto) {
         Paciente paciente = pacienteRepository.findById(dto.getPacienteId())
@@ -55,6 +66,7 @@ public class NotificacoesController {
                 .build();
 
         Notificacao salvo = notificacoesRepository.save(n);
+        log.info("Notificação criada com sucesso para o paciente ID: {}", paciente.getId());
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(salvo);
@@ -63,6 +75,7 @@ public class NotificacoesController {
     /**
      * Marcar uma notificação como lida.
      */
+    @Operation(summary = "Marcar Notificação como Lida", description = "Marca uma notificação específica como lida.")
     @PutMapping("/marcar-lida/{id}")
     public ResponseEntity<Notificacao> marcarComoLida(@PathVariable Long id) {
         Notificacao n = notificacoesRepository.findById(id)
@@ -72,6 +85,7 @@ public class NotificacoesController {
             n.setLida(true);
             n = notificacoesRepository.save(n);
         }
+        log.info("Notificação marcada como lida: {}", n.getId());
         return ResponseEntity.ok(n);
     }
 }
