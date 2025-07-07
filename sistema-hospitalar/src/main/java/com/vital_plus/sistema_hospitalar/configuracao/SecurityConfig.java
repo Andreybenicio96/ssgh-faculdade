@@ -28,10 +28,20 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/h2-console/**", "/autenticacao/login", "/administradores", "/swagger-ui/**",
-                                "/v3/api-docs/**")        
-                        .permitAll()
-                        .requestMatchers("/pacientes/**",
+                        .requestMatchers(
+                                "/h2-console/**",
+                                "/autenticacao/login",
+                                "/administradores",
+                                "/swagger-ui.html",
+                                "/swagger-ui/**",
+                                "/v3/api-docs",
+                                "/v3/api-docs/**",
+                                "/swagger-resources/**",
+                                "/configuration/**",
+                                "/webjars/**",
+
+                                // Endpoints públicos (liberados temporariamente)
+                                "/pacientes/**",
                                 "/profissionais/**",
                                 "/prontuarios/**",
                                 "/receitas/**",
@@ -41,11 +51,13 @@ public class SecurityConfig {
                                 "/exames/**",
                                 "/tipos-exame/**",
                                 "/gerenciar-consultas/**",
-                                "/teleconsulta/**").permitAll()
+                                "/teleconsulta/**")
+                        .permitAll()
                         .anyRequest().authenticated())
                 .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .headers(headers -> headers.frameOptions().sameOrigin())
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+
         return http.build();
     }
 

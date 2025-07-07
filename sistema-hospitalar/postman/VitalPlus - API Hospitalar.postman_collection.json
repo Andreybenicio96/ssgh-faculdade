@@ -1,0 +1,1017 @@
+{
+	"info": {
+		"_postman_id": "c4a9a1c2-3917-423e-ba6c-c280c923494f",
+		"name": "VitalPlus - API Hospitalar",
+		"description": "Coleção de testes da API Hospitalar VitalPlus",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "42131480"
+	},
+	"item": [
+		{
+			"name": "Autenticação",
+			"item": [
+				{
+					"name": "Login",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"admin@vitalplus.com\",\n  \"senha\": \"admin123\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/autenticacao/login",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"autenticacao",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login com Senha Incorreta",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"joao@email.com\",\n  \"senha\": \"errado123\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/autenticacao/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"autenticacao",
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Administradores",
+			"item": [
+				{
+					"name": "Cadastrar Administrador",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"nomeUsuario\": \"adminvital\",\n  \"email\": \"admin@vitalplus.com\",\n  \"senhaHash\": \"admin123\",\n  \"telefone\": \"11999999999\",\n  \"tipoUsuario\": \"ADMIN\",\n  \"nomeCompleto\": \"Admin Vital\",\n  \"cargo\": \"Diretor\",\n  \"departamento\": \"TI\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/administradores",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"administradores"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Atualizar Administrador",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"nomeUsuario\": \"admineditado\",\n  \"email\": \"admin@vitalplus.com\",\n  \"telefone\": \"11988887777\",\n  \"departamento\": \"TI\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/administradores/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"administradores",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Listar Administradores",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/administradores",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"administradores"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Relatório Geral",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/administradores/relatorio",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"administradores",
+								"relatorio"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Remover Paciente",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/administradores/remover-paciente/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"administradores",
+								"remover-paciente",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Remover Profissional",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/administradores/remover-profissional/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"administradores",
+								"remover-profissional",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Cadastrar Paciente",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"nomeUsuario\": \"paciente1\",\n  \"email\": \"paciente@vitalplus.com\",\n  \"senhaHash\": \"123456\",\n  \"telefone\": \"11988888888\",\n  \"tipoUsuario\": \"PACIENTE\",\n  \"dataNascimento\": \"1990-01-01\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/administradores/cadastrar-paciente",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"administradores",
+								"cadastrar-paciente"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Cadastrar Profissional",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"nomeUsuario\": \"prof1\",\n  \"email\": \"prof@vitalplus.com\",\n  \"senhaHash\": \"123456\",\n  \"telefone\": \"11988889999\",\n  \"tipoUsuario\": \"PROFISSIONAL_SAUDE\",\n  \"registroProfissional\": \"CRM123456\",\n  \"especialidade\": \"Cl\\u00ednico Geral\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/administradores/cadastrar-profissional",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"administradores",
+								"cadastrar-profissional"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Pacientes",
+			"item": [
+				{
+					"name": "Atualizar Perfil",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJwYWNpZW50ZUB2aXRhbHBsdXMuY29tIiwicm9sZSI6IlBBQ0lFTlRFIiwiaWF0IjoxNzUxNzQzMjQ4LCJleHAiOjE3NTE4Mjk2NDh9.TAoPSB1zTqeroKbOH8Gq_N7-pgR60TpPnqw_WJMRxRs",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"nomeCompleto\": \"Marcio da Silva\",  \r\n  \"nomeUsuario\": \"paciente1\",\r\n  \"email\": \"paciente@vitalplus.com\",\r\n  \"senhaHash\": \"123456\",\r\n  \"telefone\": \"11988888888\",\r\n  \"tipoUsuario\": \"PACIENTE\",\r\n  \"dataNascimento\": \"1990-01-01\",\r\n  \"endereco\": \"Rua A, 123\",\r\n  \"sexo\": \"M\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/pacientes/atualizar-perfil/35",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"pacientes",
+								"atualizar-perfil",
+								"35"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Listar Pacientes",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Profissionais",
+			"item": [
+				{
+					"name": "Atualizar Perfil",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJwcm9mQHZpdGFscGx1cy5jb20iLCJyb2xlIjoiUFJPRklTU0lPTkFMX1NBVURFIiwiaWF0IjoxNzUxNzQ0MDkzLCJleHAiOjE3NTE4MzA0OTN9.oFekDDpWTjYCvlagybF7OY2K6vPWu55Yuk0kA84CpHs",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"nomeCompleto\": \"Antonio dos Santos\",\r\n  \"nomeUsuario\": \"prof1\",\r\n  \"email\": \"prof@vitalplus.com\",\r\n  \"senhaHash\": \"123456\",\r\n  \"telefone\": \"11988889999\",\r\n  \"tipoUsuario\": \"PROFISSIONAL_SAUDE\",\r\n  \"registroProfissional\": \"CRM123456\",\r\n  \"especialidade\": \"Fisioterapeuta\"\r\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/profissionais/atualizar-perfil/3",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"profissionais",
+								"atualizar-perfil",
+								"3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Listar Profissionais",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Consultas",
+			"item": [
+				{
+					"name": "Agendar Consulta",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"pacienteId\": 1,\n  \"profissionalId\": 1,\n  \"dataHoraConsulta\": \"2025-07-05T10:00:00\",\n  \"tipoConsulta\": \"ONLINE\",\n  \"motivoConsulta\": \"Dor de cabeça\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/gerenciar-consultas/agendar",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"gerenciar-consultas",
+								"agendar"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Atualizar Consulta",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"dataHora\": \"2025-07-06T10:00:00\",\n  \"tipoConsulta\": \"PRESENCIAL\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/consultas/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"consultas",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Listar Consultas",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/consultas",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"consultas"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Marcar Consulta como Realizada",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwt_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/gerenciar-consultas/realizada/1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"gerenciar-consultas",
+								"realizada",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Cancelar Consulta",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/gerenciar-consultas/cancelar/1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"gerenciar-consultas",
+								"cancelar",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Prontuários e Receitas",
+			"item": [
+				{
+					"name": "Criar Prontuário",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"consultaId\": 1,\n  \"diagnostico\": \"Gripe\",\n  \"observacoes\": \"Repouso e hidrata\\u00e7\\u00e3o\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/prontuarios",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"prontuarios"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Emitir Receita",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"pacienteId\": 1,\n  \"profissionalId\": 1,\n  \"conteudo\": \"Paracetamol 500mg, 3x ao dia\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/receitas/emitir",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"receitas",
+								"emitir"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Listar Todos Prontuários",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/prontuarios",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"prontuarios"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Listar Prontuários por Paciente",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/prontuarios/paciente/1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"prontuarios",
+								"paciente",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Listar Receita por Paciente",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "Listar Receitas por Profissional",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Teleconsulta",
+			"item": [
+				{
+					"name": "Iniciar Teleconsulta",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"consultaId\": 1\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/teleconsulta/iniciar",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"teleconsulta",
+								"iniciar"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Buscar Teleconsulta",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/teleconsulta/consulta/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"teleconsulta",
+								"consulta",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Notificações",
+			"item": [
+				{
+					"name": "Notificações por Paciente",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwt_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/notificacoes/1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"notificacoes",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Criar Notificação",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"pacienteId\": 1,\n    \"mensagem\": \"Sua consulta foi agendada.\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/notificacoes",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"notificacoes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Listar Notificações",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/notificacoes/1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"notificacoes",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Internações",
+			"item": [
+				{
+					"name": "Internar Paciente",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJwcm9mQHZpdGFscGx1cy5jb20iLCJyb2xlIjoiUFJPRklTU0lPTkFMX1NBVURFIiwiaWF0IjoxNzUxNzQ2NDIyLCJleHAiOjE3NTE4MzI4MjJ9.VbztjM3MgBF8XpTBdg-OU1D_hsKGNKfuxkSDLCq9Z-Y",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"pacienteId\": 1,\r\n  \"profissionalId\": 1,\r\n  \"leitoId\": 1,\r\n  \"motivoInternacao\": \"Pneumonia\",\r\n  \"dataHoraEntrada\": \"2025-07-06T10:00:00\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/internacoes/internar",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"internacoes",
+								"internar"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Dar Alta",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/internacoes/alta/1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"internacoes",
+								"alta",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Listar Internações",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/internacoes",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"internacoes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Buscar Internação",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/internacoes/1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"internacoes",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Leito",
+			"item": [
+				{
+					"name": "Cadastro de Leitos",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"numero\": \"L101\",\r\n  \"tipo\": \"ENFERMARIA\",\r\n  \"disponivel\": true,\r\n  \"dataHoraOcupacao\": \"2025-07-05T17:51:53.2884726\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/leitos",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"leitos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Listar Leitos",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://localhost:8080/leitos",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"leitos"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:8080"
+		},
+		{
+			"key": "token",
+			"value": ""
+		}
+	]
+}
